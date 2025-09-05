@@ -1,0 +1,16 @@
+# Servidor e API
+fastapi
+uvicorn[standard]
+
+# Processamento de Linguagem Natural
+nltk
+spacy
+transformers
+datasets
+
+# Métricas de avaliação
+rouge-score
+bert-score
+
+# Upload de arquivos (PDF, textos)
+python-multipart
