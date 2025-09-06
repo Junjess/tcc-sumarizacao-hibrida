@@ -1,11 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "Clarus Summarizer",
+  "name": "Resumidor de Páginas",
   "version": "1.0",
-  "description": "Extensão para sumarização híbrida de textos.",
+  "description": "Resumir automaticamente o conteúdo da página via Flask",
   "permissions": ["activeTab", "scripting"],
-  "host_permissions": ["http://localhost:5000/*"],
-  "action": {
-    "default_popup": "popup.html"
-  }
+  "action": { "default_popup": "popup.html" },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
 }
