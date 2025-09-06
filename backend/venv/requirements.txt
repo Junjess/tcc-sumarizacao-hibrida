@@ -1,13 +1,20 @@
 # Servidor e API
 fastapi
 uvicorn[standard]
+flask-cors
+flask
 
 # Processamento de Linguagem Natural
 nltk
 spacy
 transformers
 datasets
-
+torch
+reportlab
+tiktoken
+blobfile
+protobuf
+scikit-learn
 # Métricas de avaliação
 rouge-score
 bert-score
