@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Resumo Híbrido",
+  "name": "Resumo Abstrativo",
   "version": "1.0",
   "description": "Destaca textos na página e envia para o backend gerar resumo.",
   "permissions": ["activeTab", "scripting"],
   "host_permissions": ["http://127.0.0.1:5000/"],
   "action": {
-    "default_title": "Resumo Híbrido"
+    "default_title": "CLARUS",
+    "default_icon":"icons/icone.png"
   },
   "background": {
     "service_worker": "background.js"

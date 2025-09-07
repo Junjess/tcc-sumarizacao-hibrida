@@ -1,3 +1,6 @@
+// ----------------------------
+// Estilo
+// ----------------------------
 const style = document.createElement("style");
 style.innerHTML = `
   .highlighted-text { background-color: yellow; cursor: pointer; }
@@ -21,6 +24,9 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
+// ----------------------------
+// Painel
+// ----------------------------
 const panel = document.createElement("div");
 panel.id = "resumo-panel";
 panel.innerHTML = `
@@ -32,6 +38,9 @@ panel.innerHTML = `
 `;
 document.body.appendChild(panel);
 
+// ----------------------------
+// Estado e referências
+// ----------------------------
 let penActive = false;
 let highlights = [];
 
@@ -41,6 +50,9 @@ const clearButton = document.getElementById("clear-btn");
 const closeButton = document.getElementById("close-btn");
 const output = document.getElementById("resumo-output");
 
+// ----------------------------
+// Botões
+// ----------------------------
 penButton.addEventListener("click", () => {
   penActive = !penActive;
   penButton.style.backgroundColor = penActive ? "yellow" : "";
@@ -52,6 +64,9 @@ closeButton.addEventListener("click", () => {
   highlights = [];
 });
 
+// ----------------------------
+// Função para destacar seleção
+// ----------------------------
 function highlightSelection() {
   const selection = window.getSelection();
   if (!selection || selection.isCollapsed) return;
@@ -66,9 +81,7 @@ function highlightSelection() {
     const walker = document.createTreeWalker(
       range.commonAncestorContainer,
       NodeFilter.SHOW_TEXT,
-      {
-        acceptNode: node => range.intersectsNode(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
-      }
+      { acceptNode: node => range.intersectsNode(node) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT }
     );
 
     while (walker.nextNode()) textNodes.push(walker.currentNode);
@@ -77,7 +90,6 @@ function highlightSelection() {
       const nodeRange = document.createRange();
       nodeRange.selectNodeContents(node);
 
-      // Ajusta range para não ultrapassar seleção
       if (node === textNodes[0]) nodeRange.setStart(node, Math.max(0, range.startOffset));
       if (node === textNodes[textNodes.length - 1]) nodeRange.setEnd(node, Math.min(node.length, range.endOffset));
 
@@ -101,18 +113,23 @@ function highlightSelection() {
   }
 }
 
-document.addEventListener("mouseup", (e) => {
-  const panel = document.getElementById("resumo-panel");
+// ----------------------------
+// Detecta seleção
+// ----------------------------
+document.addEventListener("mouseup", () => {
   if (!penActive || !window.getSelection) return;
   const selection = window.getSelection();
   if (selection.isCollapsed) return;
 
-  if (panel.contains(selection.anchorNode) || panel.contains(selection.focusNode)) {
-    return; 
-  }
+  const panel = document.getElementById("resumo-panel");
+  if (panel.contains(selection.anchorNode) || panel.contains(selection.focusNode)) return;
+
   highlightSelection();
 });
 
+// ----------------------------
+// Limpar marcações
+// ----------------------------
 clearButton.addEventListener("click", () => {
   const spans = document.querySelectorAll(".highlighted-text");
   spans.forEach(span => {
@@ -123,6 +140,9 @@ clearButton.addEventListener("click", () => {
   output.textContent = "Todas as marcações foram removidas.";
 });
 
+// ----------------------------
+// Remover highlight individual
+// ----------------------------
 document.addEventListener("click", e => {
   if (e.target.classList.contains("highlighted-text")) {
     const span = e.target;
@@ -137,6 +157,9 @@ document.addEventListener("click", e => {
   }
 });
 
+// ----------------------------
+// Gerar resumo
+// ----------------------------
 resumoButton.addEventListener("click", () => {
   const texto = highlights.map(h => h.text).join("\n");
 
@@ -160,33 +183,21 @@ resumoButton.addEventListener("click", () => {
 
       output.innerHTML = "";
 
-      // Resumo por tópicos
-      if (Array.isArray(data.sections)) {
-        data.sections.forEach(sec => {
-          const titleEl = document.createElement("div");
-          titleEl.className = "section-title";
-          titleEl.textContent = sec.titulo || "Sem título";
-
-          const summaryEl = document.createElement("div");
-          summaryEl.className = "section-summary";
-          summaryEl.textContent = sec.resumo || "";
-
-          output.appendChild(titleEl);
-          output.appendChild(summaryEl);
-        });
-      }
-
-      // Resumo coeso geral
+      // ----------------------------
+      // Resumo coeso geral dividido em parágrafos
+      // ----------------------------
       const coesoTitle = document.createElement("div");
       coesoTitle.className = "section-title";
       coesoTitle.textContent = "Resumo Geral";
-
-      const coesoText = document.createElement("div");
-      coesoText.className = "section-summary";
-      coesoText.textContent = data.resumo_coeso;
-
       output.appendChild(coesoTitle);
-      output.appendChild(coesoText);
+
+      const resumo = data.resumo_coeso || "Resumo não disponível.";
+      resumo.split(/(?<=\.)\s+/).forEach(paragrafo => {
+        const p = document.createElement("div");
+        p.className = "section-summary";
+        p.textContent = paragrafo.trim();
+        output.appendChild(p);
+      });
     })
     .catch(err => {
       output.textContent = "Erro de conexão: " + err;
