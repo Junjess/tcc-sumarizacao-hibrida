@@ -1,14 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "Resumidor de Páginas",
+  "name": "Resumo Híbrido",
   "version": "1.0",
-  "description": "Resumir automaticamente o conteúdo da página via Flask",
+  "description": "Destaca textos na página e envia para o backend gerar resumo.",
   "permissions": ["activeTab", "scripting"],
-  "action": { "default_popup": "popup.html" },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ]
+  "host_permissions": ["http://127.0.0.1:5000/"],
+  "action": {
+    "default_title": "Resumo Híbrido"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
 }

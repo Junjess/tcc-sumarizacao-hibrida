@@ -1,23 +1,30 @@
 # Servidor e API
 fastapi
 uvicorn[standard]
-flask-cors
 flask
+flask-cors
+python-multipart  
 
 # Processamento de Linguagem Natural
 nltk
-spacy
+spacy>=3.6.0
+pt_core_news_lg @ https://github.com/explosion/spacy-models/releases/download/pt_core_news_lg-3.6.0/pt_core_news_lg-3.6.0-py3-none-any.whl
 transformers
-datasets
 torch
-reportlab
-tiktoken
-blobfile
-protobuf
+sentence-transformers
+datasets
+trafilatura[recommended]
+
+# Pré-processamento e vetorização
+numpy
 scikit-learn
+
 # Métricas de avaliação
 rouge-score
 bert-score
 
-# Upload de arquivos (PDF, textos)
-python-multipart
+# Outros utilitários
+reportlab
+tiktoken
+protobuf
+blobfile

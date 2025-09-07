@@ -1,7 +1,7 @@
 import telebot
 import requests
 
-API_KEY = "SUA_CHAVE_DO_TELEGRAM"
+API_KEY = "CHAVE_DO_TELEGRAM"
 BACKEND_URL = "http://localhost:5000/summarize"
 
 bot = telebot.TeleBot(API_KEY)
